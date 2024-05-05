@@ -1,0 +1,261 @@
+{% load static %}
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <title>CareerForge</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a
+            class="navbar-brand mx-2"
+            href="/"
+            style="color: white; font-weight: bold"
+            >CareerForge</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="navtext"
+                  aria-current="page"
+                  href="/"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="navtext"
+                  aria-current="page"
+                  href="/#about"
+                  >About</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="navtext"
+                  aria-current="page"
+                  href="dash"
+                  >Jobs</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="navtext"
+                  aria-current="page"
+                  href="#"
+                  >Blogs</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="navtext"
+                  aria-current="page"
+                  href="#"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row p-5">
+        <div class="col-sm-2 p-4 dash_sidebar d-flex flex-column justify-content-center align-item-center">
+          <a class="my-2 sb_item" href="hrdash"><i class="fa fa-home mx-2" style="font-size:20px;" ></i>Home</a>
+          <br />
+          <a class="my-2 sb_item" href="profile"><i class="fa fa-user mx-2" style="font-size:20px;" ></i>Profile </a> <br />
+          <a class="my-2 sb_item" href="upload_job"><i class="fa fa-upload mx-2" style="font-size:20px;" ></i>Upload Job </a><br />
+          <a class="my-2 sb_item" href="application"><i class="fa fa-file mx-2" style="font-size:20px;" ></i>Application</a>
+          <br />
+          <a class="my-2 sb_item" href="messages"><i class="fa fa-comment mx-2" style="font-size:20px;" ></i>Messages</a> <br />
+          <a class="my-2 sb_item " href="logout"><i class="bx bx-log-out mx-2" style="font-size:20px;" ></i>Log out</a>
+        </div>
+        <div class="col-md-10">
+            <div class="container " >
+                <h2 >Manage Applications</h2>
+                <!-- Application List -->
+                <div class="card mb-4">
+                  <div class="card-header" style="background-color: #622ebf;color:white;">Applications</div>
+                  <div class="card-body">
+                    <!-- Table to display applications -->
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Applicant Name</th>
+                          <th scope="col">Job Title</th>
+                          <th scope="col">Status</th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for application in applications %}
+                        {% if application.job.company.name == company.name %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ application.applicant }}</td>
+                                <td>{{ application.job.job.title }}</td>
+                                <td>{{ application.get_status_display }}</td>
+                                <td>
+                                  <td>
+                                    <form method="post" action="{% url 'accept_application' application.id %}">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-success" value="Accept">
+                                    </form>
+                                </td>
+                                <td>
+                                  <form method="post" action="{% url 'reject_application' application.id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger" value="Reject">
+                                </form>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                  </div>
+                </div>
+            
+                <!-- Accepted Applications Table -->
+                <h2>Accepted Applications</h2>
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Table to display accepted applications -->
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Applicant Name</th>
+                          <th scope="col">Job Title</th>
+                          <th scope="col">Status</th>
+                          <th scope="col"> </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for accept_application in accept_applications %}
+                        {% if accept_application.job.company.name == company.name %}
+                        <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{ accept_application.applicant }}</td>
+                          <td>{{ accept_application.job.job.title }}</td>
+                          <td>{{ accept_application.get_status_display }}</td>
+                          <td><a href="room?id={{accept_application.applicant.id}}"><button class="btn btn-primary">Chat with candidate</button></a></td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="container-fluid footer">
+      <div class="row p-5 ">
+        <div class="col-sm-3 my-2">
+          <h2>CareerForge</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Perspiciatis cumque facere
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-4">
+              <h3>Quick Links</h3>
+              <ul>
+                <li class="footerli">Home</li>
+                <li class="footerli">About</li>
+                <li class="footerli">Jobs</li>
+                <li class="footerli">Services</li>
+                <li class="footerli">Contact Us</li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h3>Services</h3>
+              <ul>
+                <li class="footerli">Web Development</li>
+                <li class="footerli">App Development</li>
+                <li class="footerli">SEO</li>
+                <li class="footerli">Marketing</li>
+                <li class="footerli">Content Writing</li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <h3>Follow Us</h3>
+              <ul>
+                <li class="footerli">Twitter</li>
+                <li class="footerli">Instagram</li>
+                <li class="footerli">Linkedin</li>
+                <li class="footerli">Youtube</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <h3>Contact Us</h3>
+          <p>Address: 123, XYZ Road, ABC City, 123456</p>
+          <p>Email:sam123@gmail.com</p>
+        </div>
+      </div>
+      <div class="row" style="color:rgba(255, 255, 255, 0.495);">
+        <div class="col-sm-12 d-flex flex align-item-center justify-content-center p-1" style="border-top: solid 1px rgba(255, 255, 255, 0.495);">
+          
+          <p class="text-center"><i class="fa fa-copyright" style="font-size: large;"></i>2024 Samee Shaikh All rights reserved</p>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+

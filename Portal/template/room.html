@@ -1,0 +1,398 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CareerForge</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <style>
+  /* Message Room Styles */
+  .message-thread {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+  }
+  
+  .sender {
+    font-weight: bold;
+  }
+  
+  .timestamp {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* Message Input Styles */
+  .message-input {
+    margin-top: 20px;
+  }
+  
+  .message-input textarea {
+    width:100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    resize: none;
+  }
+  
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand mx-2"
+          href="#"
+          style="color: white; font-weight: bold"
+          >CareerForge</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarSupportedContent"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="navtext"
+                aria-current="page"
+                href="#"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="navtext"
+                aria-current="page"
+                href="#"
+                >About</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="navtext"
+                aria-current="page"
+                href="./jobs.html"
+                >Jobs</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="navtext"
+                aria-current="page"
+                href="#"
+                >Blogs</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="navtext"
+                aria-current="page"
+                href="#"
+                >Contact Us</a
+              >
+            </li>
+            <li>
+              {% if user %}
+              {% else %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                  <i class="fa fa-user mx-1"></i>Account
+                </a>
+                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="dash">Jobs</a></li>
+                  <li><a class="dropdown-item" href="resume">Edit Resume</a></li>
+                  <li><a class="dropdown-item" href="myjobs">My jobs</a></li>
+                  <li><a class="dropdown-item" href="applied_jobs">Applied Jobs</a></li>
+                  <li><a class="dropdown-item" href="messages">Messages</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="logout"><i class="bx bx-log-out mx-2" style="font-size:20px;" ></i>Logout</a></li>
+                </ul> 
+              </li>
+              {% endif %}
+            </li>
+          </ul>
+          <!-- <button class="btn mybtn mx-2">login</button>
+              <button class="btn otherbtn mx-2">Register</button> -->
+        </div>
+      </div>
+    </nav>
+    <!-- <div class="banner1 p-5 d-flex align-item-center justify-content-center ">
+          <div class="row ">
+              <div class="col-md-12 d-flex  flex-column align-item-center justify-content-center ">
+                  <h1>Forge Your Career</h1>
+                  <p>Search,Apply &</p>
+                  <p>Get Hired</p>
+
+              </div>
+              <div class="row"><div class="col-sm-6">
+                  <button class="btn mybtn">Browse Jobs</button>
+              </div></div>
+          </div>
+      </div> -->
+  </header>
+
+  <div class="container-fluid">
+    <div class="row p-5">
+      {% if user %}
+      <div class="col-sm-2 p-4 dash_sidebar d-flex flex-column justify-content-center align-item-center">
+        <a class="my-2 sb_item" href="hrdash"><i class="fa fa-home mx-2" style="font-size:20px;" ></i>Home</a>
+        <br />
+        <a class="my-2 sb_item" href="profile"><i class="fa fa-user mx-2" style="font-size:20px;" ></i>Profile </a> <br />
+        <a class="my-2 sb_item" href="upload_job"><i class="fa fa-upload mx-2" style="font-size:20px;" ></i>Upload Job </a><br />
+        <a class="my-2 sb_item" href="application"><i class="fa fa-file mx-2" style="font-size:20px;" ></i>Application</a>
+        <br />
+        <a class="my-2 sb_item" href="messages"><i class="fa fa-comment mx-2" style="font-size:20px;" ></i>Messages</a> <br />
+        <a class="my-2 sb_item " href="logout"><i class="bx bx-log-out mx-2" style="font-size:20px;" ></i>Log out</a>
+      </div>
+      {% endif %}
+      <div class="col-sm-10 p-4">
+        <div class="container-fluid dash_box p-3">
+          <div class="card-title">
+            <h2>Message Room</h2>
+          </div>
+          <div class="card-body">
+            <!-- Message Thread -->
+            <div class="message-thread">
+              <!-- Individual Messages -->
+              <div class="message" id="messages">
+                <!-- <div class="sender">Sender Name</div>
+                <div class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                <div class="timestamp">12:30 PM</div> -->
+              </div>
+              <!-- More messages... -->
+            </div>
+          </div>
+        </div>
+        <div class="message-input">            {% csrf_token %}
+            <textarea id="message" class="form-control" placeholder="Type your message here..."></textarea>
+
+            <button class="btn sub1 m-3" onclick="sendMessage()">Send</button>
+
+        </div>
+
+    </div>
+  </div>
+  </div>
+  <!-- footer -->
+  <div class="container-fluid footer">
+    <div class="row p-5 ">
+      <div class="col-sm-3 my-2">
+        <h2>CareerForge</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Perspiciatis cumque facere
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-4">
+            <h3>Quick Links</h3>
+            <ul>
+              <li class="footerli">Home</li>
+              <li class="footerli">About</li>
+              <li class="footerli">Jobs</li>
+              <li class="footerli">Services</li>
+              <li class="footerli">Contact Us</li>
+            </ul>
+          </div>
+          <div class="col-sm-4">
+            <h3>Services</h3>
+            <ul>
+              <li class="footerli">Web Development</li>
+              <li class="footerli">App Development</li>
+              <li class="footerli">SEO</li>
+              <li class="footerli">Marketing</li>
+              <li class="footerli">Content Writing</li>
+            </ul>
+          </div>
+          <div class="col-sm-4">
+            <h3>Follow Us</h3>
+            <ul>
+              <li class="footerli">Twitter</li>
+              <li class="footerli">Instagram</li>
+              <li class="footerli">Linkedin</li>
+              <li class="footerli">Youtube</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <h3>Contact Us</h3>
+        <p>Address: 123, XYZ Road, ABC City, 123456</p>
+        <p>Email:sam123@gmail.com</p>
+      </div>
+    </div>
+    <div class="row" style="color:rgba(255, 255, 255, 0.495);">
+      <div class="col-sm-12 d-flex flex align-item-center justify-content-center p-1" style="border-top: solid 1px rgba(255, 255, 255, 0.495);">
+        
+        <p class="text-center"><i class="fa fa-copyright" style="font-size: large;"></i>2024 Samee Shaikh All rights reserved</p>
+      </div>
+    </div>
+  </div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function sendMessage() {
+      var messageInput = document.getElementById('message');
+      var message = messageInput.value;
+      var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Get the value of the 'recipient_id' parameter
+      const recipientId = urlParams.get('recipient_id');
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/send_message/');
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.setRequestHeader('X-CSRFToken', csrfToken);
+      xhr.onload = function() {
+          if (xhr.status === 200) {
+              messageInput.value = '';
+          }
+      };
+      xhr.send('recipient_id=' + recipientId + '&content=' + encodeURIComponent(message));
+      location.reload();
+      
+      
+  }
+  
+// Define a Set to store displayed messages
+var displayedMessages = new Set(JSON.parse(localStorage.getItem('displayedMessages')) || []);
+function getMessages() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/get_messages/');
+  xhr.onload = function() {
+      if (xhr.status === 200) {
+          try {
+              var messages = JSON.parse(xhr.responseText);
+              var messagesList = document.getElementById('messages');
+              var senders = [];
+              console.log(messages);
+              messages.forEach(function(messageData, index) {
+                  var message = messageData.fields; // Extract the 'fields' object from each message object
+                  // Create HTML elements for each message
+                  console.log(message);
+                  var messageDiv = document.createElement('div');
+                  messageDiv.classList.add('message');
+                  
+                  var senderDiv = document.createElement('div');
+                  senderDiv.classList.add('sender');
+                  senderDiv.textContent = "Sender: " + senders[index];
+                  
+                  var contentDiv = document.createElement('div');
+                  contentDiv.classList.add('message-content');
+                  contentDiv.textContent = "Content: " + message.content;
+                  
+                  var timestampDiv = document.createElement('div');
+                  timestampDiv.classList.add('timestamp');
+                  timestampDiv.textContent = "Timestamp: " + message.timestamp;
+                  
+                  messageDiv.appendChild(senderDiv);
+                  messageDiv.appendChild(contentDiv);
+                  messageDiv.appendChild(timestampDiv);
+                  
+                  messagesList.appendChild(messageDiv);
+              });
+          } catch (error) {
+              console.error('Error parsing JSON:', error);
+          }
+      } else {
+          console.error('Request failed:', xhr.status);
+      }
+  };
+  xhr.onerror = function() {
+      console.error('Request failed:', xhr.status);
+  };
+  xhr.send();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  getMessages(); // Call getMessages() when the page is loaded
+});
+
+    function getMessages() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get_messages/');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var messages = JSON.parse(xhr.responseText).messages;
+                console.log(messages);
+                var messagesList = document.getElementById('messages');
+                messagesList.innerHTML = ''; // Clear previous messages
+                for (var i = 0; i < messages.length; i++) {
+                    var message = messages[i];
+                    var messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message');
+                    var senderDiv = document.createElement('div');
+                    senderDiv.classList.add('sender');
+                    senderDiv.textContent = message.sender;
+                    var contentDiv = document.createElement('div');
+                    contentDiv.classList.add('message-content');
+                    contentDiv.textContent = message.content;
+                    var timestampDiv = document.createElement('div');
+                    timestampDiv.classList.add('timestamp');
+                    timestampDiv.textContent = message.timestamp;
+                    messageDiv.appendChild(senderDiv);
+                    messageDiv.appendChild(contentDiv);
+                    messageDiv.appendChild(timestampDiv);
+                    messagesList.appendChild(messageDiv);
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        getMessages(); // Call getMessages() when the page is loaded
+    });
+
+
+  // Call getMessages function periodically to update the chat interface
+//setInterval(getMessages, 1000);
+ function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;}
+  </script>
+</body>
+</html>
